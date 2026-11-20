@@ -1,0 +1,14 @@
+# Keeps the WorshipSync v2 test server on Render awake, so reminders and the weekly schedule go out on time.
+# GitHub runs it roughly every 10–15 minutes (scheduled runs can be delayed a little).
+name: wake
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping health
+        run: curl -fsS --retry 3 --retry-delay 20 --max-time 90 https://worshipsync-v2-test.onrender.com/api/health
